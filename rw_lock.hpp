@@ -1,7 +1,7 @@
 // File: rw_lock.hpp
 // Author: Bing-a-ling
 // This head file implements a write-first read&write lock. It allows only one thread to write at one time. It allows multiple threads to read at the same time when there is no writing going on.
-#pragma once s
+#pragma once
 #include <mutex>
 #include <condition_variable>
 
