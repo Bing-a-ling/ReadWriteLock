@@ -10,8 +10,7 @@ public:
     ReadWriteLock()
     :m_read_count_(0),
     m_write_count_(0),
-    m_is_writing_(false)
-    {}
+    m_is_writing_(false) {}
     virtual ~ReadWriteLock() = default;
     void lockWrite(){
         std::unique_lock<std::mutex> guard(m_lock_);
