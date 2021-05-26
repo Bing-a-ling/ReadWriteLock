@@ -9,7 +9,8 @@ class ReadWriteLock{
 public:
     ReadWriteLock()
     :m_read_count_(0),
-    m_write_count_(0){}
+    m_write_count_(0),
+    m_is_writing_(false) {}
     virtual ~ReadWriteLock() = default;
     void lockWrite(){
         std::unique_lock<std::mutex> guard(m_lock_);
@@ -27,17 +28,16 @@ public:
         ++m_read_count_;
     }
     void unlockWrite(){
-        std::unique_lock<std::mutex> guard(m_lock_);
+        std::lock_guard<std::mutex> guard(m_lock_);
         m_is_writing_ = false;
         if(--m_write_count_ == 0){
             m_read_condition_.notify_all();
         } else {
             m_write_condition_.notify_one();
         }
-
     }
     void unlockRead(){
-        std::unique_lock<std::mutex> guard(m_lock_);
+        std::lock_guard<std::mutex> guard(m_lock_);
         if(--m_read_count_ == 0 && m_write_count_ > 0){
             m_write_condition_.notify_one();
         }
